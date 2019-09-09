@@ -123,7 +123,8 @@ class Board extends Component {
                                                                  this.props.setFirstPlayer(firstPlayerId),
                                                                  this.props.updateCurrentPot(),
                                                                  this.props.resetTablePot(),
-                                                                 this.props.setTablePot()) : null}>
+                                                                 this.props.setTablePot()) : null}
+                                                                 >
                     {allCards}
                     <div className='clear'></div>
                 </div>

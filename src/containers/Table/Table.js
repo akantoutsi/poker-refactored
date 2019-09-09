@@ -21,13 +21,13 @@ class Table extends Component {
             this.props.resetOpenCardsFlags();
         }
 
-        if (this.props.tbl.openAllBoardCards) {
-            // console.log('open all cards');
-            this.props.updatePotsNumber();
-            this.props.openAllBoardCards(1);
-            this.props.areAllBoardCardsOpen();
-            this.props.resetOpenCardsFlags();
-        }
+        // if (this.props.tbl.openAllBoardCards) {
+        //     // console.log('open all cards');
+        //     this.props.updatePotsNumber();
+        //     this.props.openAllBoardCards(1);
+        //     this.props.areAllBoardCardsOpen();
+        //     this.props.resetOpenCardsFlags();
+        // }
 
         if (this.props.tbl.potsCount >= 5) {
             // console.log('check for winner no matter what');
