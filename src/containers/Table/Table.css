@@ -1,0 +1,70 @@
+.window-class {
+    margin-top: 14%;
+}
+
+.Table {
+    height: 350px;
+    background: linear-gradient(#006400, #003c00);
+    border-radius: 250px;
+    border: 1px solid black;
+    margin: auto;
+}
+
+.table-wrapper {
+    border-radius: 250px;
+    margin-left: 20%; 
+    margin-right: 20%; 
+    position: relative; 
+    border: 15px solid transparent;
+    background: linear-gradient(#202020, #2c2c2c);
+    border-image-slice: 1;
+    padding: 0;
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+.seat {
+    border: 2px solid #433737; 
+    background-color:#515151;
+    border-radius: 50%;
+    width: 160px;
+    height: 160px;
+    position: absolute;
+}
+
+.seat-lbl {
+    left: 50%;
+    top: 50%;
+    margin-right: -60%;
+    transform: translate(-50%, -50%);
+    overflow: auto;
+    position: absolute;
+    color: #2f2424;
+}
+
+#seat-1 {
+    top: calc(85%);
+    left: calc(85%);
+}
+
+#seat-2 {
+    top: calc(85%);
+    right: calc(85%);
+}
+
+#seat-3 {
+    bottom: calc(85%);
+    right: calc(85%);
+}
+
+#seat-4 {
+    bottom: calc(85%);
+    left: calc(85%);
+}
