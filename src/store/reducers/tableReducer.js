@@ -332,7 +332,6 @@ const tableReducer = (state = initialState, action) => {
                     // openAllBoardCards = 1;
 
                     potsCount     += 1;
-                    let tmp        = players.map(elem => ({...elem, changedPot: 0}));
                     cards          = [...state.cards];
                     updatedCards   = cardsToOpen(cards, 'isVisible', 1);
                     checkForWinner = checkIfAll(updatedCards, 'isVisible', true) === updatedCards.length;
@@ -477,7 +476,61 @@ const tableReducer = (state = initialState, action) => {
                         // alert('next - vres nikiti');
                         currentPlayer.nextPlayer = 0;
                         possibleWinners          = players.filter(elem => elem.isActive);
-                        openAllBoardCards        = 1;
+                        // openAllBoardCards        = 1;
+
+                        potsCount     += 1;
+                        cards          = [...state.cards];
+                        updatedCards   = cardsToOpen(cards, 'isVisible', 1);
+                        checkForWinner = checkIfAll(updatedCards, 'isVisible', true) === updatedCards.length;
+                        boardCards     = [...updatedCards];
+    
+                        if (checkForWinner) {
+                            potsCount = 0;
+                            let updatedBoardCards = updatedCards.slice();
+    
+                            let cardsToCheck = possibleWinners.map(elem => {
+                                return elem.cards.concat(updatedBoardCards.map(el => ({...el, belongsTo: elem.cards[0].belongsTo, isBoard: true})));
+                            });
+    
+                            let e = cardsToCheck.map(el => formatCards(el));
+                            let result = printWinners(e);
+    
+                            if (result.length >= 1) {
+                                let res       = result.map(elem => elem[0][0]);
+                                let bestCards = _.orderBy(res);
+    
+                                let bestCombNum = bestCards.reduce((acc, elem) => {
+                                    acc = (elem.typeOfCombination > acc) ? acc : elem.typeOfCombination;
+                                    return acc;
+                                }, bestCards[0].typeOfCombination);
+    
+                                let winCombinations = bestCards.filter(elem => elem.typeOfCombination === bestCombNum);
+                                let comb            = state.cardCombinations.filter(elem => elem.code === bestCombNum);
+                                let winnerIds       = getWinnerIds(winCombinations);
+                    
+                                alert(`The winning combination is ${_.get(comb[0], 'title')}. Winner(s) are player(s): ${winnerIds.map(elem => elem + 1)}`);
+                    
+                                let winnerCards = winCombinations.map(elem => elem.slice(0, elem[0].typeOfCombination));
+                    
+                                let updatedWinnerCards = winnerCards.map(elem => elem.map(el => ({...el, selected: true})));
+                    
+                                // console.log(updatedWinnerCards);
+                    
+                                updatedWinnerCards.map(elem => elem.map(el => el.isBoard ? (boardCards.filter(e => e.value === el.value && e.suit === el.suit ? e.selected = true : null)) : null));
+                                updatedWinnerCards.map(elem => elem.map(el => !el.isBoard ? players.map(pl => pl.cards.filter(e => e.value === el.value && e.suit === el.suit ? e.selected = true : null)) : null));
+                    
+                                winCombinations = [];
+                                checkForWinner  = 0;
+                            }
+                        }
+
+                        openBoardCards = 0;
+                        openAllBoardCards = 0;
+    
+                        // nea function opou tha parei olo to state pou kanw return pio katw wste na mi xreiastei na kalw stin render tou Board to if ()
+                        // i function afti tha epistrefei to ananewmeno state to opoio tha epistrefw en telei
+                        // dld tha peirazw me ti mia olo to state kai oxi stadiaka opws twra
+                        // function()
                     } 
     
                     if (restPlayers.length === 1 && currentPlayer.cash >= 0) {
@@ -490,7 +543,61 @@ const tableReducer = (state = initialState, action) => {
                             currentPlayer.nextPlayer = 0;
                             // alert('next - vres nikiti');
                             possibleWinners   = players.filter(elem => elem.isActive);
-                            openAllBoardCards = 1;
+                            // openAllBoardCards = 1;
+
+                            potsCount     += 1;
+                            cards          = [...state.cards];
+                            updatedCards   = cardsToOpen(cards, 'isVisible', 1);
+                            checkForWinner = checkIfAll(updatedCards, 'isVisible', true) === updatedCards.length;
+                            boardCards     = [...updatedCards];
+        
+                            if (checkForWinner) {
+                                potsCount = 0;
+                                let updatedBoardCards = updatedCards.slice();
+        
+                                let cardsToCheck = possibleWinners.map(elem => {
+                                    return elem.cards.concat(updatedBoardCards.map(el => ({...el, belongsTo: elem.cards[0].belongsTo, isBoard: true})));
+                                });
+        
+                                let e = cardsToCheck.map(el => formatCards(el));
+                                let result = printWinners(e);
+        
+                                if (result.length >= 1) {
+                                    let res       = result.map(elem => elem[0][0]);
+                                    let bestCards = _.orderBy(res);
+        
+                                    let bestCombNum = bestCards.reduce((acc, elem) => {
+                                        acc = (elem.typeOfCombination > acc) ? acc : elem.typeOfCombination;
+                                        return acc;
+                                    }, bestCards[0].typeOfCombination);
+        
+                                    let winCombinations = bestCards.filter(elem => elem.typeOfCombination === bestCombNum);
+                                    let comb            = state.cardCombinations.filter(elem => elem.code === bestCombNum);
+                                    let winnerIds       = getWinnerIds(winCombinations);
+                        
+                                    alert(`The winning combination is ${_.get(comb[0], 'title')}. Winner(s) are player(s): ${winnerIds.map(elem => elem + 1)}`);
+                        
+                                    let winnerCards = winCombinations.map(elem => elem.slice(0, elem[0].typeOfCombination));
+                        
+                                    let updatedWinnerCards = winnerCards.map(elem => elem.map(el => ({...el, selected: true})));
+                        
+                                    // console.log(updatedWinnerCards);
+                        
+                                    updatedWinnerCards.map(elem => elem.map(el => el.isBoard ? (boardCards.filter(e => e.value === el.value && e.suit === el.suit ? e.selected = true : null)) : null));
+                                    updatedWinnerCards.map(elem => elem.map(el => !el.isBoard ? players.map(pl => pl.cards.filter(e => e.value === el.value && e.suit === el.suit ? e.selected = true : null)) : null));
+                        
+                                    winCombinations = [];
+                                    checkForWinner  = 0;
+                                }
+                            }
+
+                            openBoardCards = 0;
+                            openAllBoardCards = 0;
+        
+                            // nea function opou tha parei olo to state pou kanw return pio katw wste na mi xreiastei na kalw stin render tou Board to if ()
+                            // i function afti tha epistrefei to ananewmeno state to opoio tha epistrefw en telei
+                            // dld tha peirazw me ti mia olo to state kai oxi stadiaka opws twra
+                            // function()
                         }
                     } 
                     
@@ -526,7 +633,13 @@ const tableReducer = (state = initialState, action) => {
                     alreadyOpenedCards: alreadyOpenedCards,
                     canUpdateTablePot: canUpdateTablePot,
                     possibleWinners: possibleWinners,
-                    howManyPlayersChecked: howManyPlayersChecked
+                    howManyPlayersChecked: howManyPlayersChecked,
+
+                    checkForWinner: checkForWinner,
+                    potsCount: potsCount,
+                    winCombinations: winCombinations,
+                    cards: (boardCards.length > 0) ? boardCards : [...state.cards],
+                    round: 0
                 }
     
             case actionTypes.RESET_OPEN_CARDS_FLAGS:
