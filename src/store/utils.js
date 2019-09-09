@@ -20,7 +20,7 @@ export const sortArray = (arr, property) => {
     return res;
 }
 
-export const formatCards = (cardsToFormat) => {
+export const getValidComb = (cardsToFormat) => {
     let cards                  = sortArray(cardsToFormat, 'rank');  
     let grpCardsBySuit         = groupByProperty(cards, 'suit');
     let tmpGroupedCardsByValue = groupByProperty(cards, 'rank');
@@ -32,14 +32,15 @@ export const formatCards = (cardsToFormat) => {
     let grpCardsByValue = Object.entries(tmpGroupedCardsByValue);
     sortArray(grpCardsByValue, grpCardsByValue[1]);
 
-    let a        = findWinner(grpCardsBySuit, grpCardsByValue);
+    let a        = findPlayerComb(grpCardsBySuit, grpCardsByValue);
     let winCombs = [];
     winCombs.push(a);
 
     return winCombs;
 }
 
-export const printWinners = (arr) => {
+// sxoliase to kai sti sinexeia delete otan aantikatastisw to proto if stin table render
+export const getWinners = (arr) => {
     let grouped = arr.map(elem => {
         return elem.reduce((acc, el) => {
             const key = el.typeOfCombination;
@@ -349,10 +350,58 @@ const findCombination = (groupedCardsBySuit, groupedCardsByValue) => {
     }
 }
 
-export const findWinner = (bySuit, byValues) => {
+export const findPlayerComb = (bySuit, byValues) => {
     let res = findCombination(bySuit, byValues);
     let acceptedCombinations = [];
     acceptedCombinations.push(res);
 
     return acceptedCombinations;
 }
+
+// export const findBestCards = () => {
+//     potsCount     += 1;
+//     cards          = [...state.cards];
+//     updatedCards   = cardsToOpen(cards, 'isVisible', 1);
+//     checkForWinner = checkIfAll(updatedCards, 'isVisible', true) === updatedCards.length;
+//     boardCards     = [...updatedCards];
+
+//     if (checkForWinner) {
+//         potsCount = 0;
+//         let updatedBoardCards = updatedCards.slice();
+
+//         let cardsToCheck = possibleWinners.map(elem => {
+//             return elem.cards.concat(updatedBoardCards.map(el => ({...el, belongsTo: elem.cards[0].belongsTo, isBoard: true})));
+//         });
+
+//         let e = cardsToCheck.map(el => getValidComb(el));
+//         let result = getWinners(e);
+
+//         if (result.length >= 1) {
+//             let res       = result.map(elem => elem[0][0]);
+//             let bestCards = _.orderBy(res);
+
+//             let bestCombNum = bestCards.reduce((acc, elem) => {
+//                 acc = (elem.typeOfCombination > acc) ? acc : elem.typeOfCombination;
+//                 return acc;
+//             }, bestCards[0].typeOfCombination);
+
+//             let winCombinations = bestCards.filter(elem => elem.typeOfCombination === bestCombNum);
+//             let comb            = state.cardCombinations.filter(elem => elem.code === bestCombNum);
+//             let winnerIds       = getWinnerIds(winCombinations);
+
+//             alert(`The winning combination is ${_.get(comb[0], 'title')}. Winner(s) are player(s): ${winnerIds.map(elem => elem + 1)}`);
+
+//             let winnerCards = winCombinations.map(elem => elem.slice(0, elem[0].typeOfCombination));
+
+//             let updatedWinnerCards = winnerCards.map(elem => elem.map(el => ({...el, selected: true})));
+
+//             // console.log(updatedWinnerCards);
+
+//             updatedWinnerCards.map(elem => elem.map(el => el.isBoard ? (boardCards.filter(e => e.value === el.value && e.suit === el.suit ? e.selected = true : null)) : null));
+//             updatedWinnerCards.map(elem => elem.map(el => !el.isBoard ? players.map(pl => pl.cards.filter(e => e.value === el.value && e.suit === el.suit ? e.selected = true : null)) : null));
+
+//             winCombinations = [];
+//             checkForWinner  = 0;
+//         }
+//     }
+// }

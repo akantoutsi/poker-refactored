@@ -89,7 +89,7 @@ const mapDispatchToProps = dispatch => {
         openAllBoardCards   : (openAll)                   => dispatch({type: actionTypes.OPEN_CARDS,               payload: openAll}),
         resetOpenCardsFlags : ()                          => dispatch({type: actionTypes.RESET_OPEN_CARDS_FLAGS}),
         areAllBoardCardsOpen: ()                          => dispatch({type: actionTypes.ALL_BOARD_CARDS_OPEN}),
-        getWinner           : (cardsBySuit, cardsByValue) => dispatch({type: actionTypes.GET_WINNER,               payload: {cardsBySuit: cardsBySuit, cardsByValue: cardsByValue}}),
+        // getWinner           : (cardsBySuit, cardsByValue) => dispatch({type: actionTypes.GET_WINNER,               payload: {cardsBySuit: cardsBySuit, cardsByValue: cardsByValue}}),
         resetWinners        : ()                          => dispatch({type: actionTypes.RESET_WINNERS}),
         resetRound          : ()                          => dispatch({type: actionTypes.RESET_ROUND}),
         updatePotsNumber    : ()                          => dispatch({type: actionTypes.UPDATE_POTS_COUNT}),

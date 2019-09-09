@@ -1,6 +1,6 @@
 import * as actionTypes from '../actionTypes';
 import _                from 'lodash';
-import { createCards, cardsToOpen, checkIfAll, findWinner, updateObjectInArray, findMaxPot, formatCards, printWinners, getWinnerIds } from '../utils';
+import { createCards, cardsToOpen, checkIfAll, findPlayerComb, updateObjectInArray, findMaxPot, getValidComb, getWinners, getWinnerIds, findBestCards } from '../utils';
 
 const initialState = {
     round: 0,
@@ -104,6 +104,7 @@ const tableReducer = (state = initialState, action) => {
                 cards: updatedCards
             }
 
+        // sxoliase to kai sti sinexeia delete otan aantikatastisw to proto if stin table render
         case actionTypes.ALL_BOARD_CARDS_OPEN:
             cards          = [...state.cards];
             checkForWinner = checkIfAll(cards, 'isVisible', true) === cards.length;
@@ -118,8 +119,8 @@ const tableReducer = (state = initialState, action) => {
                     return elem.cards.concat(updatedBoardCards.map(el => ({...el, belongsTo: elem.cards[0].belongsTo, isBoard: true})));
                 });
 
-                let e = cardsToCheck.map(el => formatCards(el));
-                let result = printWinners(e);
+                let e = cardsToCheck.map(el => getValidComb(el));
+                let result = getWinners(e);
 
                 if (result.length >= 1) {
                     let res       = result.map(elem => elem[0][0]);
@@ -161,18 +162,18 @@ const tableReducer = (state = initialState, action) => {
                 round: 0
             }
 
-        case actionTypes.GET_WINNER:
-            winCombinations = [...state.winCombinations];
-            checkForWinner  = 0;
+        // case actionTypes.GET_WINNER:
+        //     winCombinations = [...state.winCombinations];
+        //     checkForWinner  = 0;
 
-            let a = findWinner(action.payload.cardsBySuit, action.payload.cardsByValue);
-            winCombinations.push(a);
+        //     let a = findPlayerComb(action.payload.cardsBySuit, action.payload.cardsByValue);
+        //     winCombinations.push(a);
               
-            return {
-                ...state,
-                checkForWinner: checkForWinner,
-                winCombinations: winCombinations
-            }
+        //     return {
+        //         ...state,
+        //         checkForWinner: checkForWinner,
+        //         winCombinations: winCombinations
+        //     }
 
             case actionTypes.UPDATE_POTS_COUNT:
                 players   = [...state.players];
@@ -331,6 +332,8 @@ const tableReducer = (state = initialState, action) => {
                     possibleWinners   = players.filter(elem => elem.isActive);
                     // openAllBoardCards = 1;
 
+                    // findBestCards();
+
                     potsCount     += 1;
                     cards          = [...state.cards];
                     updatedCards   = cardsToOpen(cards, 'isVisible', 1);
@@ -345,10 +348,11 @@ const tableReducer = (state = initialState, action) => {
                             return elem.cards.concat(updatedBoardCards.map(el => ({...el, belongsTo: elem.cards[0].belongsTo, isBoard: true})));
                         });
 
-                        let e = cardsToCheck.map(el => formatCards(el));
-                        let result = printWinners(e);
+                        let result = cardsToCheck.map(el => getValidComb(el));
+                        // let result = getWinners(e);
 
                         if (result.length >= 1) {
+                            // let res       = result.map(elem => elem[0][0]);
                             let res       = result.map(elem => elem[0][0]);
                             let bestCards = _.orderBy(res);
 
@@ -478,6 +482,8 @@ const tableReducer = (state = initialState, action) => {
                         possibleWinners          = players.filter(elem => elem.isActive);
                         // openAllBoardCards        = 1;
 
+                        // findBestCards();
+
                         potsCount     += 1;
                         cards          = [...state.cards];
                         updatedCards   = cardsToOpen(cards, 'isVisible', 1);
@@ -492,10 +498,13 @@ const tableReducer = (state = initialState, action) => {
                                 return elem.cards.concat(updatedBoardCards.map(el => ({...el, belongsTo: elem.cards[0].belongsTo, isBoard: true})));
                             });
     
-                            let e = cardsToCheck.map(el => formatCards(el));
-                            let result = printWinners(e);
+                            let result = cardsToCheck.map(el => getValidComb(el));
+                            // console.log(e)
+                            // let result = getWinners(e);
+                            // console.log(result)
     
                             if (result.length >= 1) {
+                                // let res       = result.map(elem => elem[0][0]);
                                 let res       = result.map(elem => elem[0][0]);
                                 let bestCards = _.orderBy(res);
     
@@ -545,6 +554,8 @@ const tableReducer = (state = initialState, action) => {
                             possibleWinners   = players.filter(elem => elem.isActive);
                             // openAllBoardCards = 1;
 
+                            // findBestCards();
+
                             potsCount     += 1;
                             cards          = [...state.cards];
                             updatedCards   = cardsToOpen(cards, 'isVisible', 1);
@@ -559,10 +570,11 @@ const tableReducer = (state = initialState, action) => {
                                     return elem.cards.concat(updatedBoardCards.map(el => ({...el, belongsTo: elem.cards[0].belongsTo, isBoard: true})));
                                 });
         
-                                let e = cardsToCheck.map(el => formatCards(el));
-                                let result = printWinners(e);
+                                let result = cardsToCheck.map(el => getValidComb(el));
+                                // let result = getWinners(e);
         
                                 if (result.length >= 1) {
+                                    // let res       = result.map(elem => elem[0][0]);
                                     let res       = result.map(elem => elem[0][0]);
                                     let bestCards = _.orderBy(res);
         
