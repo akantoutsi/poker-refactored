@@ -1,6 +1,6 @@
 import * as actionTypes from '../actionTypes';
 import _                from 'lodash';
-import { createCards, cardsToOpen, checkIfAll, shouldCheckForWinner, findWinner, updateObjectInArray, findMaxPot, allHaveSamePot, formatCards, printWinners, getWinnerIds } from '../utils';
+import { createCards, cardsToOpen, checkIfAll, findWinner, updateObjectInArray, findMaxPot, formatCards, printWinners, getWinnerIds } from '../utils';
 
 const initialState = {
     round: 0,
@@ -106,7 +106,6 @@ const tableReducer = (state = initialState, action) => {
 
         case actionTypes.ALL_BOARD_CARDS_OPEN:
             cards          = [...state.cards];
-            // checkForWinner = shouldCheckForWinner(cards, 'isVisible') === cards.length;
             checkForWinner = checkIfAll(cards, 'isVisible', true) === cards.length;
             boardCards     = [...state.cards];
             players        = [...state.players];
